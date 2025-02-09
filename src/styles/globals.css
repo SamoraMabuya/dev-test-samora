@@ -1,21 +1,18 @@
+/* src/styles/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Add any custom styles here */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --cars-red: #dc2626;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-gray-50;
+}
+
+/* Add custom focus styles for better accessibility */
+*:focus {
+  @apply outline-none ring-2 ring-red-500 ring-opacity-50;
 }
