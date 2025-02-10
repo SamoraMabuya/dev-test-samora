@@ -95,8 +95,10 @@ export const fetchVehicle = async (id: string) => {
         return Array(imageCount)
           .fill(null)
           .map(
-            () =>
-              `https://img-ik.cars.co.za/ik-seo/carsimages/tr:n-stock_large/${imageId}/${title}.jpg?v=${imageVersion}`
+            (_, index) =>
+              `https://img-ik.cars.co.za/ik-seo/carsimages/tr:n-stock_large/${imageId}_${
+                index + 1
+              }/${title}.jpg?v=${imageVersion}`
           );
       })(),
     };

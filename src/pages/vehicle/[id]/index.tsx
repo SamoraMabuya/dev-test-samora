@@ -1,6 +1,5 @@
 // src/pages/vehicle/[id].tsx
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import { useState } from "react";
 import { fetchVehicle, fetchDealer } from "@/lib/api";
 import { Vehicle, Dealer } from "@/types";
@@ -11,6 +10,8 @@ import RelatedVehicles from "../../../components/vehicle/RelatedVehicles";
 import VehicleSpecs from "../VehicleSpecs";
 import DealerInfo from "@/components/vehicle/VehicleDealerInfo";
 import SocialActions from "@/components/vehicle/SocialActions";
+import { southAfricanProvinces } from "@/constants/location";
+import { Heart } from "lucide-react";
 
 interface Props {
   vehicle: Vehicle | null;
@@ -46,24 +47,27 @@ export default function VehiclePage({ vehicle, dealer, error }: Props) {
       <div className="max-w-7xl mx-auto px-4 py-4">
         {/* Title and Price Section */}
         <h1 className="text-xl font-semibold mb-3">{vehicle.title}</h1>
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-[28px] font-bold text-[#EE1133]">
-            R {vehicle.price?.toLocaleString()}
-          </span>
-          <button className="flex items-center text-[#EE1133] hover:text-red-700">
-            <span className="mr-2">♡</span>
-            Add to Wishlist
-          </button>
-        </div>
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column */}
           <div className="lg:col-span-2">
+            {/* Add to Wishlist button */}
+            <div className="flex justify-between mb-2">
+              <span className="text-[28px] font-bold text-[#EE1133]">
+                R {vehicle.price?.toLocaleString()}
+              </span>
+              <button className="flex items-center gap-2 text-[#EE1133] hover:text-red-700">
+                Add to Wishlist
+                <Heart className="hidden md:block w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Gallery */}
             <VehicleGallery images={vehicle.images || []} />
 
             {/* Specification Summary */}
-            <div className="mt-6">
+            <div className="mt-8">
               <VehicleSpecs
                 year={vehicle.year}
                 mileage={vehicle.mileage}
@@ -119,6 +123,7 @@ export default function VehiclePage({ vehicle, dealer, error }: Props) {
               dealer={dealer}
               showPhone={showPhone}
               onShowPhone={() => setShowPhone(true)}
+              provinces={southAfricanProvinces}
             />
 
             {/* Social Actions */}
