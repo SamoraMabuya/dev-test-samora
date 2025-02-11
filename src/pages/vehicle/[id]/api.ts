@@ -1,5 +1,5 @@
 // src/lib/api.ts
-import { VehicleResponse, Vehicle, Dealer } from "@/types";
+import { VehicleResponse,} from "@/types";
 
 const API_BASE = "https://nextjs-rho-red-22.vercel.app/api";
 

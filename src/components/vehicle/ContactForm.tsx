@@ -8,7 +8,7 @@ interface Props {
   dealer: Dealer;
   showPhone: boolean;
   onShowPhone: () => void;
-  provinces: string[]; // Add provinces prop
+  provinces: string[];
 }
 
 export default function ContactForm({
