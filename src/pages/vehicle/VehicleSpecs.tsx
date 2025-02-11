@@ -62,7 +62,7 @@ export default function VehicleSpecs({
       {/* Condition Badge */}
       <div className="spec-item">
         <CheckCircle2 className="spec-icon" />
-        <span className="spec-text">{condition}condition</span>
+        <span className="spec-text">{condition} condition</span>
       </div>
     </div>
   );

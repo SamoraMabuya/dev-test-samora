@@ -1,4 +1,3 @@
-// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -7,14 +6,10 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        "cars-red": "#DC2626",
-      },
-      spacing: {
-        "128": "32rem",
-      },
-      maxWidth: {
-        "8xl": "88rem",
+      primary: {
+        DEFAULT: "#ce181e",
+        light: "#de3339",
+        dark: "#b31418",
       },
     },
   },

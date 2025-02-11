@@ -1,15 +1,14 @@
-// src/pages/vehicle/[id].tsx
 import { GetServerSideProps } from "next";
 import { useState } from "react";
 import { fetchVehicle, fetchDealer } from "@/lib/api";
 import { Vehicle, Dealer } from "@/types";
 import Layout from "@/components/layout/Layout";
-import VehicleGallery from "@/components/vehicle/VehicleGallery";
-import ContactForm from "@/components/vehicle/ContactForm";
-import RelatedVehicles from "../../../components/vehicle/RelatedVehicles";
+import VehicleGallery from "@/components/VehicleGallery";
+import ContactForm from "@/components/ContactForm";
+import RelatedVehicles from "../../../components/RelatedVehicles";
 import VehicleSpecs from "../VehicleSpecs";
-import DealerInfo from "@/components/vehicle/VehicleDealerInfo";
-import SocialActions from "@/components/vehicle/SocialActions";
+import DealerInfo from "@/components/VehicleDealerInfo";
+import SocialActions from "@/components/SocialActions";
 import { southAfricanProvinces } from "@/constants/location";
 import { Heart } from "lucide-react";
 
@@ -24,21 +23,17 @@ export default function VehiclePage({ vehicle, dealer, error }: Props) {
 
   if (error) {
     return (
-      <Layout>
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <p className="text-red-600">{error}</p>
-        </div>
-      </Layout>
+      <div className="status">
+        <p className="text-red-600">{error}</p>
+      </div>
     );
   }
 
   if (!vehicle || !dealer) {
     return (
-      <Layout>
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <p>Loading...</p>
-        </div>
-      </Layout>
+      <div className="status">
+        <p>Loading...</p>
+      </div>
     );
   }
 
@@ -54,7 +49,7 @@ export default function VehiclePage({ vehicle, dealer, error }: Props) {
           <div className="lg:col-span-2">
             {/* Add to Wishlist button */}
             <div className="flex justify-between mb-2">
-              <span className="text-[28px] font-bold text-[#EE1133]">
+              <span className="text-[28px] font-bold text-primary-dark">
                 R {vehicle.price?.toLocaleString()}
               </span>
               <button className="flex items-center gap-2 text-[#EE1133] hover:text-red-700">
@@ -127,7 +122,7 @@ export default function VehiclePage({ vehicle, dealer, error }: Props) {
             />
 
             {/* Social Actions */}
-            <SocialActions vehicleTitle={vehicle.title} />
+            <SocialActions />
 
             {/* Related Vehicles */}
             {vehicle.relatedVehicles && vehicle.relatedVehicles.length > 0 && (

@@ -1,8 +1,7 @@
-// src/components/vehicle/VehicleGallery.tsx
 import { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
-import ImageLightbox from "./ImageLightbox";
+import ImageLightbox from "./ui/ImageLightbox";
 
 interface Props {
   images: string[];

@@ -36,8 +36,8 @@ export const fetchDealerVehicles = async (
 
     // Transform the API response to match our RelatedVehicle type
     return data.data.data
-      .filter((vehicle) => vehicle.id !== excludeVehicleId) // Exclude current vehicle
-      .slice(0, 4) // Take only 4 vehicles
+      .filter((vehicle) => vehicle.id !== excludeVehicleId)
+      .slice(0, 4)
       .map((vehicle) => ({
         id: vehicle.id,
         title: vehicle.attributes.title,

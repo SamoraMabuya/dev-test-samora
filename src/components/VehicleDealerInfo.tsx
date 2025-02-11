@@ -1,4 +1,3 @@
-// src/components/vehicle/DealerInfo.tsx
 import { MapPin } from "lucide-react";
 
 interface DealerInfoProps {
@@ -19,7 +18,7 @@ export default function DealerInfo({
           <h3 className="text-[#213740] font-semibold">{name}</h3>
           <p className="text-[#666]">{location}</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="block items-center gap-3">
           <span className="text-[#666] flex items-center">
             <MapPin className="w-4 h-4 mr-1" />
             {distance} away

@@ -1,18 +1,11 @@
-/* src/styles/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Add any custom styles here */
-:root {
-  --cars-red: #dc2626;
-}
 
 body {
   @apply bg-gray-50;
 }
 
-/* Add custom focus styles for better accessibility */
 *:focus {
   @apply outline-none ring-2 ring-red-500 ring-opacity-50;
 }
@@ -21,16 +14,19 @@ body {
   .spec-container {
     @apply bg-gray-50 p-6 rounded;
   }
-  
+
   .spec-item {
     @apply flex items-center bg-white rounded-md px-3 py-2 mr-3 mb-3;
   }
-  
+
   .spec-icon {
     @apply w-4 h-4 text-[#303131] mr-2;
   }
-  
+
   .spec-text {
     @apply text-[#303131];
+  }
+  .status {
+    @apply max-w-7xl mx-auto px-4 py-8;
   }
 }

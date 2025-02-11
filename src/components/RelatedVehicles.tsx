@@ -1,4 +1,3 @@
-// src/components/vehicle/RelatedVehicles.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { Gauge, Settings, Fuel } from "lucide-react";

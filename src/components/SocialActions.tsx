@@ -1,11 +1,7 @@
-// src/components/vehicle/SocialActions.tsx
-import { Facebook, Share2, Flag } from "lucide-react";
+import { Flag } from "lucide-react";
+import { FacebookIcon } from "./icons";
 
-interface SocialActionsProps {
-  vehicleTitle: string;
-}
-
-export default function SocialActions({ vehicleTitle }: SocialActionsProps) {
+export default function SocialActions() {
   return (
     <div className="mt-6 space-y-4 text-center">
       {/* Share section */}
@@ -13,7 +9,7 @@ export default function SocialActions({ vehicleTitle }: SocialActionsProps) {
         <span className="text-[#666]">Share:</span>
         <div className="flex items-center gap-3">
           <button className="text-blue-600 hover:opacity-80">
-            <Facebook className="w-5 h-5" />
+            <FacebookIcon className="w-5 h-5" />
           </button>
           <button className="text-green-500 hover:opacity-80">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
