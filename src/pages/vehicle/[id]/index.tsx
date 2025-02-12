@@ -119,6 +119,7 @@ export default function VehiclePage({ vehicle, dealer, error }: Props) {
               showPhone={showPhone}
               onShowPhone={() => setShowPhone(true)}
               provinces={southAfricanProvinces}
+              vehicleId={vehicle.id}
             />
 
             {/* Social Actions */}
