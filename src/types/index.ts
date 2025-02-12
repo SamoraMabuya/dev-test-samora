@@ -72,6 +72,7 @@ export interface Vehicle {
   dealerId: string;
   dealerDistance?: string;
   relatedVehicles?: RelatedVehicle[];
+  code: string;
 }
 export interface Dealer {
   id: string;
@@ -98,12 +99,6 @@ export interface RelatedVehicle {
   image: string;
 }
 
-export interface VehicleSpecs {
-  code: string;
-  year: number;
-  specs: Record<string, any>;
-}
-
 export interface LeadFormData {
   name: string;
   email: string;
@@ -115,4 +110,40 @@ export interface LeadFormData {
   };
   vehicleId: string;
   dealerId: string;
+}
+
+export interface DealerVehiclesResponse {
+  data: {
+    data: Array<{
+      type: string;
+      id: string;
+      attributes: {
+        title: string;
+        price: number;
+        mileage: string;
+        transmission: string;
+        fuel_type: string;
+        image: {
+          name: string;
+          version: number;
+        };
+      };
+    }>;
+  };
+}
+
+interface SpecAttribute {
+  label: string;
+  value: string;
+}
+
+interface SpecSection {
+  title: string | null;
+  attrs: SpecAttribute[];
+}
+
+export interface VehicleSpecsResponse {
+  data: {
+    data: SpecSection[][];
+  };
 }

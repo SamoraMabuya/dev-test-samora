@@ -1,4 +1,3 @@
-// src/constants/locations.ts
 export const southAfricanProvinces = [
   "Eastern Cape",
   "Free State",

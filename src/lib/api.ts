@@ -1,29 +1,14 @@
-// src/lib/api.ts
-import { LeadFormData, RelatedVehicle, VehicleResponse } from "@/types";
+import {
+  DealerVehiclesResponse,
+  LeadFormData,
+  RelatedVehicle,
+  VehicleResponse,
+  VehicleSpecsResponse,
+} from "@/types";
 
 const API_BASE = "https://nextjs-rho-red-22.vercel.app/api";
 
-// First, add a type for the dealer vehicles response
-interface DealerVehiclesResponse {
-  data: {
-    data: Array<{
-      type: string;
-      id: string;
-      attributes: {
-        title: string;
-        price: number;
-        mileage: string;
-        transmission: string;
-        fuel_type: string;
-        image: {
-          name: string;
-          version: number;
-        };
-      };
-    }>;
-  };
-}
-
+// Fetch a list of vehicles by the given dealer
 export const fetchDealerVehicles = async (
   dealerId: string,
   excludeVehicleId: string
@@ -57,6 +42,23 @@ export const fetchDealerVehicles = async (
   }
 };
 
+// Fetch specs for a given vehicle code and year
+
+export const fetchVehicleSpecs = async (
+  code: string,
+  year: number
+): Promise<VehicleSpecsResponse> => {
+  try {
+    const res = await fetch(`${API_BASE}/specs/${code}/${year}`);
+    if (!res.ok) throw new Error("Failed to fetch vehicle specs");
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching vehicle specs:", error);
+    throw error;
+  }
+};
+
+// Fetch given vehicle by it's id
 export const fetchVehicle = async (id: string) => {
   try {
     const res = await fetch(`${API_BASE}/vehicle/${id}`);
@@ -84,6 +86,7 @@ export const fetchVehicle = async (id: string) => {
       agentLocality: vehicleData.attributes.agent_locality,
       axleConfig: vehicleData.attributes.vehicle_axle_config,
       options: vehicleData.attributes.options,
+      code: vehicleData.attributes.code,
       dealerId,
       relatedVehicles,
       images: (() => {
@@ -108,6 +111,7 @@ export const fetchVehicle = async (id: string) => {
   }
 };
 
+// Fetch dealer contact info
 export const fetchDealer = async (id: string) => {
   try {
     const res = await fetch(`${API_BASE}/vehicle/7927016`);
@@ -124,7 +128,7 @@ export const fetchDealer = async (id: string) => {
       id: dealerData.id,
       name: dealerData.attributes.name,
       location: `${dealerData.attributes.locality}, ${dealerData.attributes.province}`,
-      phone: "060 123 4567", // Placeholder
+      phone: "060 123 4567",
       whatsapp: null,
     };
   } catch (error) {
@@ -132,6 +136,8 @@ export const fetchDealer = async (id: string) => {
     throw error;
   }
 };
+
+// Submit a vehicle
 export const submitLead = async (formData: LeadFormData): Promise<any> => {
   try {
     const res = await fetch("https://nextjs-rho-red-22.vercel.app/api/lead", {

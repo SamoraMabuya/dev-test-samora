@@ -12,7 +12,7 @@ export default function Home() {
             onClick={() => router.push("/vehicle/7927016")}
             className="bg-red-600 text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors"
           >
-            View Vehicle Details
+            View Vehicle
           </button>
         </div>
       </div>

@@ -6,11 +6,11 @@ import Layout from "@/components/layout/Layout";
 import VehicleGallery from "@/components/VehicleGallery";
 import ContactForm from "@/components/ContactForm";
 import RelatedVehicles from "../../../components/RelatedVehicles";
-import VehicleSpecs from "../VehicleSpecs";
-import DealerInfo from "@/components/VehicleDealerInfo";
+import DealerInfo from "@/components/DealerInfo";
 import SocialActions from "@/components/SocialActions";
 import { southAfricanProvinces } from "@/constants/location";
 import { Heart } from "lucide-react";
+import VehicleSpecs from "@/components/VehicleSpecs";
 
 interface Props {
   vehicle: Vehicle | null;
@@ -70,6 +70,7 @@ export default function VehiclePage({ vehicle, dealer, error }: Props) {
                 fuelType={vehicle.fuelType}
                 axleConfig={vehicle.axleConfig}
                 condition={vehicle.condition}
+                code={vehicle.code}
               />
             </div>
 

@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from "react";
 import { Dealer } from "@/types";
 import { Mail, Phone, Info } from "lucide-react";
 import Link from "next/link";
-import { WhatsAppIcon } from "./icons";
+import { WhatsAppIcon } from "./ui/icons";
 
 interface FormTypes {
   dealer: Dealer;
@@ -136,7 +136,7 @@ export default function ContactForm({
           </select>
         </div>
 
-        <div className="space-y-2">
+        <div className="flex items-center gap-2">
           <div className="flex items-center gap-2">
             {/* Check box for Car Alerts Subscription */}
             <input
