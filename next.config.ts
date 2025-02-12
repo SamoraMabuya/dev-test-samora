@@ -1,9 +1,7 @@
-// next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["img-ik.cars.co.za"], // Allow images from cars.co.za
     remotePatterns: [
       {
         protocol: "https",
