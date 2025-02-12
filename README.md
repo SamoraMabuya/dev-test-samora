@@ -38,3 +38,32 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+
+### How to run this project?
+
+Clone the repository.
+
+```
+git clone https://github.com/SamoraMabuya/dev-test-samora.git
+```
+
+Install all dependencies:
+
+```
+
+npm install
+# or
+yarn install
+```
+
+Run the development server.
+
+```
+
+npm run dev
+# or
+yarn dev
+
+```
+
+On http://localhost:3000/ click the "View Vehicle" button, which will take you to the vehicle details for id 7927016.

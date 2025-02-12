@@ -83,12 +83,6 @@ export interface Dealer {
   distance?: number;
 }
 
-export interface VehicleSpecs {
-  code: string;
-  year: number;
-  specs: Record<string, any>;
-}
-
 export interface RelatedVehicle {
   id: string;
   title: string;

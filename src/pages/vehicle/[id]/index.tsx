@@ -70,7 +70,6 @@ export default function VehiclePage({ vehicle, dealer, error }: Props) {
                 fuelType={vehicle.fuelType}
                 axleConfig={vehicle.axleConfig}
                 condition={vehicle.condition}
-                code={vehicle.code}
               />
             </div>
 

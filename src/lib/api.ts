@@ -8,6 +8,11 @@ import {
 
 const API_BASE = "https://nextjs-rho-red-22.vercel.app/api";
 
+export interface LeadResponse {
+  success: boolean;
+  message?: string;
+}
+
 // Fetch a list of vehicles by the given dealer
 export const fetchDealerVehicles = async (
   dealerId: string,
@@ -138,7 +143,9 @@ export const fetchDealer = async (id: string) => {
 };
 
 // Submit a vehicle
-export const submitLead = async (formData: LeadFormData): Promise<any> => {
+export const submitLead = async (
+  formData: LeadFormData
+): Promise<LeadResponse> => {
   try {
     const res = await fetch("https://nextjs-rho-red-22.vercel.app/api/lead", {
       method: "POST",

@@ -1,8 +1,6 @@
 import { Flag } from "lucide-react";
-import { useRouter } from "next/router";
 
 export default function SocialActions() {
-  const router = useRouter();
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
   const shareOnFacebook = () => {

@@ -1,5 +1,3 @@
-// src/components/vehicle/VehicleSpecs.tsx
-import { useEffect, useState } from "react";
 import {
   Calendar,
   Gauge,
@@ -8,7 +6,6 @@ import {
   Navigation2,
   CheckCircle2,
 } from "lucide-react";
-import { fetchVehicleSpecs } from "@/lib/api";
 
 interface VehicleSpecsProps {
   year: number;
@@ -17,17 +14,6 @@ interface VehicleSpecsProps {
   fuelType: string;
   axleConfig: string;
   condition: string;
-  code: string;
-}
-
-interface SpecAttribute {
-  label: string;
-  value: string;
-}
-
-interface SpecSection {
-  title: string | null;
-  attrs: SpecAttribute[];
 }
 
 export default function VehicleSpecs({
@@ -37,30 +23,7 @@ export default function VehicleSpecs({
   fuelType,
   axleConfig,
   condition,
-  code,
 }: VehicleSpecsProps) {
-  const [specs, setSpecs] = useState<SpecSection[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadSpecs = async () => {
-      try {
-        const response = await fetchVehicleSpecs(code, year);
-        // Correctly access the nested array structure
-        const specsSections = response?.data?.data?.[0] || [];
-        setSpecs(specsSections);
-      } catch (error) {
-        console.error("Failed to load specs:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (code && year) {
-      loadSpecs();
-    }
-  }, [code, year]);
-
   return (
     <div className="bg-gray-50 p-6 rounded">
       <h2 className="text-[#213740] font-semibold text-xl mb-6">
@@ -68,7 +31,7 @@ export default function VehicleSpecs({
       </h2>
 
       {/* Basic Specs */}
-      <div className="flex flex-wrap ">
+      <div className="flex flex-wrap">
         <div className="spec-item">
           <Calendar className="spec-icon" />
           <span className="spec-text">{year}</span>
