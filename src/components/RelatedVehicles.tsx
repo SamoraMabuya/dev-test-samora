@@ -1,21 +1,23 @@
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Gauge, Settings, Fuel } from "lucide-react";
+import { Gauge, Settings, Fuel, ChevronDown, ChevronUp } from "lucide-react";
 import { RelatedVehicle } from "@/types";
 
 interface RelatedVehiclesProps {
   vehicles: RelatedVehicle[];
   dealerName: string;
   dealerLocation: string;
-  dealerId: string;
 }
 
 export default function RelatedVehicles({
   vehicles,
   dealerName,
   dealerLocation,
-  dealerId,
 }: RelatedVehiclesProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const displayedVehicles = isExpanded ? vehicles : vehicles.slice(0, 4);
+
   return (
     <div className="mt-6 space-y-4">
       <h3 className="text-lg font-semibold text-[#213740]">
@@ -23,7 +25,7 @@ export default function RelatedVehicles({
       </h3>
 
       <div className="space-y-4">
-        {vehicles.map((vehicle) => (
+        {displayedVehicles.map((vehicle) => (
           <Link
             href={`/vehicle/${vehicle.id}`}
             key={vehicle.id}
@@ -68,12 +70,22 @@ export default function RelatedVehicles({
         ))}
       </div>
 
-      <Link
-        href={`/dealer/${dealerId}/vehicles`}
-        className="block text-center text-red-600 py-3 border border-red-600 rounded-lg hover:bg-red-50 transition-colors"
-      >
-        View all cars
-      </Link>
+      {vehicles.length > 4 && (
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="w-full text-center text-red-600 py-3 border border-red-600 rounded-lg hover:bg-red-50 transition-colors flex items-center justify-center gap-2"
+        >
+          {isExpanded ? (
+            <>
+              Show less <ChevronUp className="w-4 h-4" />
+            </>
+          ) : (
+            <>
+              View all cars <ChevronDown className="w-4 h-4" />
+            </>
+          )}
+        </button>
+      )}
     </div>
   );
 }

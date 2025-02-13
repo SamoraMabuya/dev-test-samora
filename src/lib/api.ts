@@ -15,18 +15,18 @@ export interface LeadResponse {
 // Fetch a list of vehicles by the given dealer
 export const fetchDealerVehicles = async (
   dealerId: string,
-  excludeVehicleId: string
+  excludeVehicleId: string,
+  limit?: number
 ): Promise<RelatedVehicle[]> => {
   try {
     const res = await fetch(`${API_BASE}/vehicle?dealer_id=${dealerId}`);
-    if (!res.ok) throw new Error("Failed to fetch dealer vehicles");
+    if (!res.ok) {
+      throw new Error(`Failed to fetch dealer vehicles: ${res.status}`);
+    }
 
     const data: DealerVehiclesResponse = await res.json();
-
-    // Transform the API response to match our RelatedVehicle type
-    return data.data.data
+    const filteredVehicles = data.data.data
       .filter((vehicle) => vehicle.id !== excludeVehicleId)
-      .slice(0, 4)
       .map((vehicle) => ({
         id: vehicle.id,
         title: vehicle.attributes.title,
@@ -40,9 +40,12 @@ export const fetchDealerVehicles = async (
           vehicle.attributes.image.version
         }`,
       }));
+
+    return limit ? filteredVehicles.slice(0, limit) : filteredVehicles;
   } catch (error) {
-    console.error("Error fetching dealer vehicles:", error);
-    return [];
+    throw new Error(
+      error instanceof Error ? error.message : "Failed to fetch dealer vehicles"
+    );
   }
 };
 
