@@ -7,12 +7,14 @@ interface RelatedVehiclesProps {
   vehicles: RelatedVehicle[];
   dealerName: string;
   dealerLocation: string;
+  dealerId: string;
 }
 
 export default function RelatedVehicles({
   vehicles,
   dealerName,
   dealerLocation,
+  dealerId,
 }: RelatedVehiclesProps) {
   return (
     <div className="mt-6 space-y-4">
@@ -67,7 +69,7 @@ export default function RelatedVehicles({
       </div>
 
       <Link
-        href="#"
+        href={`/dealer/${dealerId}/vehicles`}
         className="block text-center text-red-600 py-3 border border-red-600 rounded-lg hover:bg-red-50 transition-colors"
       >
         View all cars

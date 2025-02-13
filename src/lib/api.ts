@@ -1,10 +1,9 @@
+import { LeadFormData, RelatedVehicle } from "@/types";
 import {
   DealerVehiclesResponse,
-  LeadFormData,
-  RelatedVehicle,
-  VehicleResponse,
   VehicleSpecsResponse,
-} from "@/types";
+  VehicleResponse,
+} from "./types";
 
 const API_BASE = "https://nextjs-rho-red-22.vercel.app/api";
 
@@ -119,16 +118,23 @@ export const fetchVehicle = async (id: string) => {
 // Fetch dealer contact info
 export const fetchDealer = async (id: string) => {
   try {
+    // Using hardcoded vehicle ID isn't ideal, should use proper dealer endpoint
     const res = await fetch(`${API_BASE}/vehicle/7927016`);
-    if (!res.ok) throw new Error("Failed to fetch dealer");
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch dealer data with status: ${res.status}`);
+    }
 
     const responseData: VehicleResponse = await res.json();
     const dealerData = responseData.data.included.find(
       (item) => item.id === id
     );
 
-    if (!dealerData) throw new Error("Dealer not found");
+    if (!dealerData) {
+      throw new Error(`Dealer with ID ${id} not found`);
+    }
 
+    // Hardcoded values should be replaced with actual data
     return {
       id: dealerData.id,
       name: dealerData.attributes.name,
@@ -137,8 +143,15 @@ export const fetchDealer = async (id: string) => {
       whatsapp: null,
     };
   } catch (error) {
-    console.error("Error fetching dealer:", error);
-    throw error;
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error fetching dealer:", error);
+    }
+
+    throw new Error(
+      error instanceof Error
+        ? `Failed to fetch dealer: ${error.message}`
+        : "Failed to fetch dealer"
+    );
   }
 };
 

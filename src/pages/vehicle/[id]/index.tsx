@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { useState } from "react";
 import { fetchVehicle, fetchDealer } from "@/lib/api";
-import { Vehicle, Dealer } from "@/types";
+import { Dealer } from "@/types";
 import Layout from "@/components/layout/Layout";
 import VehicleGallery from "@/components/VehicleGallery";
 import ContactForm from "@/components/ContactForm";
@@ -11,6 +11,7 @@ import SocialActions from "@/components/SocialActions";
 import { southAfricanProvinces } from "@/constants/location";
 import { Heart } from "lucide-react";
 import VehicleSpecs from "@/components/VehicleSpecs";
+import { Vehicle } from "@/lib/types";
 
 interface Props {
   vehicle: Vehicle | null;
@@ -131,6 +132,7 @@ export default function VehiclePage({ vehicle, dealer, error }: Props) {
                 vehicles={vehicle.relatedVehicles}
                 dealerName={dealer.name}
                 dealerLocation={dealer.location}
+                dealerId={dealer.id}
               />
             )}
           </div>
