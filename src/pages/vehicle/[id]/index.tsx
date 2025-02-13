@@ -7,7 +7,7 @@ import VehicleGallery from "@/components/VehicleGallery";
 import ContactForm from "@/components/ContactForm";
 import RelatedVehicles from "../../../components/RelatedVehicles";
 import DealerInfo from "@/components/DealerInfo";
-import SocialActions from "@/components/SocialActions";
+import ShareSocialIcons from "@/components/SocialActions";
 import { southAfricanProvinces } from "@/constants/location";
 import { Heart } from "lucide-react";
 import VehicleSpecs from "@/components/VehicleSpecs";
@@ -111,10 +111,8 @@ export default function VehiclePage({ vehicle, dealer, error }: Props) {
               </p>
             </div>
           </div>
-
-          {/* Right Column */}
+          {/* Contact Form */}
           <div className="lg:col-span-1 space-y-6">
-            {/* Contact Form */}
             <ContactForm
               dealer={dealer}
               showPhone={showPhone}
@@ -123,8 +121,8 @@ export default function VehiclePage({ vehicle, dealer, error }: Props) {
               vehicleId={vehicle.id}
             />
 
-            {/* Social Actions */}
-            <SocialActions />
+            {/* Social Link Via Social Icons */}
+            <ShareSocialIcons />
 
             {/* Related Vehicles */}
             {vehicle.relatedVehicles && vehicle.relatedVehicles.length > 0 && (
@@ -132,7 +130,6 @@ export default function VehiclePage({ vehicle, dealer, error }: Props) {
                 vehicles={vehicle.relatedVehicles}
                 dealerName={dealer.name}
                 dealerLocation={dealer.location}
-                dealerId={dealer.id}
               />
             )}
           </div>

@@ -1,6 +1,6 @@
 import { Flag } from "lucide-react";
 
-export default function SocialActions() {
+export default function ShareSocialIcons() {
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
   const shareOnFacebook = () => {
