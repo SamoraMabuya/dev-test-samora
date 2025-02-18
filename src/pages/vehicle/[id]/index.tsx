@@ -139,11 +139,23 @@ export default function VehiclePage({ vehicle, dealer, error }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  res,
+}) => {
+  res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
+
   try {
     const id = params?.id as string;
+
+    // First fetch vehicle data
     const vehicle = await fetchVehicle(id);
-    const dealer = await fetchDealer(vehicle.dealerId);
+
+    // Then fetch dealer using the same ID since dealer info is in vehicle response
+    const dealer = await fetchDealer(id);
 
     return {
       props: {
@@ -153,6 +165,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     };
   } catch (error) {
     console.error("Error fetching data:", error);
+
     return {
       props: {
         vehicle: null,

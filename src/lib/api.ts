@@ -7,6 +7,22 @@ import {
 
 const API_BASE = "https://nextjs-rho-red-22.vercel.app/api";
 
+const fetchWithCache = async (url: string, options: RequestInit = {}) => {
+  const res = await fetch(url, {
+    ...options,
+    headers: {
+      ...options.headers,
+      "Cache-Control": "public, max-age=300", // Cache for 5 minutes
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`API error: ${res.status}`);
+  }
+
+  return res;
+};
+
 export interface LeadResponse {
   success: boolean;
   message?: string;
@@ -72,11 +88,12 @@ export const fetchVehicle = async (id: string) => {
     if (!res.ok) throw new Error("Failed to fetch vehicle");
 
     const responseData: VehicleResponse = await res.json();
+
     const vehicleData = responseData.data.data[0];
     const dealerId = vehicleData.relationships.seller.data.id;
 
     // Pass the current vehicle ID to exclude it from related vehicles
-    const relatedVehicles = await fetchDealerVehicles(dealerId, id);
+    const relatedVehicles = await fetchDealerVehicles(dealerId, id, 4);
 
     return {
       id: vehicleData.id,
@@ -121,23 +138,30 @@ export const fetchVehicle = async (id: string) => {
 // Fetch dealer contact info
 export const fetchDealer = async (id: string) => {
   try {
-    // Using hardcoded vehicle ID isn't ideal, should use proper dealer endpoint
-    const res = await fetch(`${API_BASE}/vehicle/7927016`);
+    // Since dealer info is included in vehicle response, we'll use that
+    const res = await fetch(`${API_BASE}/vehicle/${id}`, {
+      headers: {
+        "Cache-Control": "public, max-age=300",
+      },
+    });
 
     if (!res.ok) {
-      throw new Error(`Failed to fetch dealer data with status: ${res.status}`);
+      throw new Error(
+        `Failed to fetch vehicle data with status: ${res.status}`
+      );
     }
 
     const responseData: VehicleResponse = await res.json();
-    const dealerData = responseData.data.included.find(
-      (item) => item.id === id
+
+    // Find dealer in the included data
+    const dealerData = responseData.data.included?.find(
+      (item) => item.type === "seller" // or whatever type identifies the dealer
     );
 
     if (!dealerData) {
-      throw new Error(`Dealer with ID ${id} not found`);
+      throw new Error(`Dealer information not found in vehicle data`);
     }
 
-    // Hardcoded values should be replaced with actual data
     return {
       id: dealerData.id,
       name: dealerData.attributes.name,
