@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { useState } from "react";
-import { fetchVehicle, fetchDealer } from "@/lib/api";
-import { Dealer } from "@/types";
+import { fetchDealerVehicles, API_BASE } from "@/lib/api";
+import { Dealer, RelatedVehicle } from "@/types";
 import Layout from "@/components/layout/Layout";
 import VehicleGallery from "@/components/VehicleGallery";
 import ContactForm from "@/components/ContactForm";
@@ -11,7 +11,7 @@ import ShareSocialIcons from "@/components/SocialActions";
 import { southAfricanProvinces } from "@/constants/location";
 import { Heart } from "lucide-react";
 import VehicleSpecs from "@/components/VehicleSpecs";
-import { Vehicle } from "@/lib/types";
+import { Vehicle, VehicleResponse } from "@/lib/types";
 
 interface Props {
   vehicle: Vehicle | null;
@@ -145,17 +145,96 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   res.setHeader(
     "Cache-Control",
-    "public, s-maxage=10, stale-while-revalidate=59"
+    "public, s-maxage=60, stale-while-revalidate=300"
   );
 
   try {
     const id = params?.id as string;
 
-    // First fetch vehicle data
-    const vehicle = await fetchVehicle(id);
+    // First fetch vehicle data without Promise.all
+    const vehicleResponse = await fetch(`${API_BASE}/vehicle/${id}`, {
+      headers: {
+        "Cache-Control": "public, max-age=300",
+      },
+    });
 
-    // Then fetch dealer using the same ID since dealer info is in vehicle response
-    const dealer = await fetchDealer(id);
+    if (!vehicleResponse.ok) {
+      throw new Error(
+        `Failed to fetch data with status: ${vehicleResponse.status}`
+      );
+    }
+
+    const responseData: VehicleResponse = await vehicleResponse.json();
+    const vehicleData = responseData.data.data[0];
+    const dealerData = responseData.data.included?.find(
+      (item) => item.type === "seller"
+    );
+
+    if (!dealerData) {
+      throw new Error("Dealer information not found");
+    }
+
+    // Try to fetch related vehicles, but don't fail if it errors
+    let relatedVehicles: RelatedVehicle[] = [];
+    try {
+      if (vehicleData.relationships?.seller?.data?.id) {
+        relatedVehicles = await fetchDealerVehicles(
+          vehicleData.relationships.seller.data.id,
+          id,
+          4
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching related vehicles:", error);
+      // Don't throw, just continue with empty related vehicles
+    }
+
+    // Construct vehicle object
+    const vehicle = {
+      id: vehicleData.id,
+      title: vehicleData.attributes.title,
+      price: vehicleData.attributes.price,
+      year: vehicleData.attributes.year,
+      mileage: vehicleData.attributes.mileage,
+      transmission: vehicleData.attributes.transmission,
+      fuelType: vehicleData.attributes.fuel_type,
+      condition: vehicleData.attributes.condition,
+      description: vehicleData.attributes.description,
+      reference: vehicleData.attributes.reference,
+      agentName: vehicleData.attributes.agent_name,
+      agentLocality: vehicleData.attributes.agent_locality,
+      axleConfig: vehicleData.attributes.vehicle_axle_config,
+      options: vehicleData.attributes.options,
+      code: vehicleData.attributes.code,
+      dealerId: vehicleData.relationships.seller.data.id,
+      relatedVehicles,
+      images: (() => {
+        const imageCount = vehicleData.attributes.image.count;
+        const imageVersion = vehicleData.attributes.image.version;
+        const imageId = vehicleData.attributes.image.name;
+        // / Encode vehicle title for URL safety (handles spaces & special chars)
+        const title = encodeURIComponent(vehicleData.attributes.title);
+
+        // Generate array of image URLs based on count, each URL incremented by index
+        return Array(imageCount)
+          .fill(null)
+          .map(
+            (_, index) =>
+              `https://img-ik.cars.co.za/ik-seo/carsimages/tr:n-stock_large/${imageId}_${
+                index + 1
+              }/${title}.jpg?v=${imageVersion}`
+          );
+      })(),
+    };
+
+    // Construct dealer object
+    const dealer = {
+      id: dealerData.id,
+      name: dealerData.attributes.name,
+      location: `${dealerData.attributes.locality}, ${dealerData.attributes.province}`,
+      phone: dealerData.attributes || "060 123 4567",
+      whatsapp: dealerData.attributes || null,
+    };
 
     return {
       props: {
@@ -165,12 +244,14 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   } catch (error) {
     console.error("Error fetching data:", error);
-
     return {
       props: {
         vehicle: null,
         dealer: null,
-        error: "Failed to load vehicle data",
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to load vehicle data",
       },
     };
   }

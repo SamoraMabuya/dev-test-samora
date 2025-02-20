@@ -5,28 +5,7 @@ import {
   VehicleResponse,
 } from "./types";
 
-const API_BASE = "https://nextjs-rho-red-22.vercel.app/api";
-
-const fetchWithCache = async (url: string, options: RequestInit = {}) => {
-  const res = await fetch(url, {
-    ...options,
-    headers: {
-      ...options.headers,
-      "Cache-Control": "public, max-age=300", // Cache for 5 minutes
-    },
-  });
-
-  if (!res.ok) {
-    throw new Error(`API error: ${res.status}`);
-  }
-
-  return res;
-};
-
-export interface LeadResponse {
-  success: boolean;
-  message?: string;
-}
+export const API_BASE = "https://nextjs-rho-red-22.vercel.app/api";
 
 // Fetch a list of vehicles by the given dealer
 export const fetchDealerVehicles = async (
@@ -183,9 +162,7 @@ export const fetchDealer = async (id: string) => {
 };
 
 // Submit a vehicle
-export const submitLead = async (
-  formData: LeadFormData
-): Promise<LeadResponse> => {
+export const submitLead = async (formData: LeadFormData): Promise<Response> => {
   try {
     const res = await fetch("https://nextjs-rho-red-22.vercel.app/api/lead", {
       method: "POST",
